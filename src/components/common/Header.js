@@ -10,17 +10,32 @@ const HeaderWrapper = styled.header`
   padding: 0 16px;
   position: fixed;
   top: 0;
+  background-image: linear-gradient(to right, #f8049c, #fdd54f);
+  border-bottom: 3px solid #fdd54f;
 `;
 
 const Menu = styled.nav`
-  display: flex;
-  position: relative;
-  width: initial;
-  border-bottom: none;
-  margin: auto 0 auto auto;
+  display: ${({ open }) => open ? 'block' : 'none'};
   font-family: 'Open Sans';
-  left: initial;
-  top: initial;
+  position: absolute;
+  width: 100%;
+  top: 60px;
+  left: 0;
+  padding: 8px;
+  box-sizing: border-box;
+  border-bottom: 3px solid #fdd54f;
+  background: white;
+
+  @media(min-width: 768px) {
+    display: flex;
+    background: none;
+    left: initial;
+    top: initial;
+    position: relative;
+    width: initial;
+    border-bottom: none;
+    margin: auto 0 auto auto;
+  }
 `;
 
 const Link = ({ isActive, children, ...props }) => {
@@ -38,14 +53,40 @@ const StyledLink = styled(Link)`
   box-sizing: border-box;
   margin: auto 0;
   font-weight: ${({ isActive }) => isActive ? 'bold' : 'normal'};
+  color: black;
+  text-decoration: none;
+`;
+
+const MobileMenuIcon = styled.div`
+  margin: auto 0 auto auto;
+  width: 25px;
+  min-width: 25px;
+  padding: 5px;
+
+  >div {
+    height: 3px;
+    background: black;
+    margin: 5px 0;
+    width: 100%;
+  }
+
+  @media(min-width: 758px){
+    display: none;
+  }
 `;
 
 const Header = () => {
   const { pathname } = useLocation();
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
     <HeaderWrapper>
-      <Menu>
+      <MobileMenuIcon onClick={() => setIsMenuOpen(s => !s)}>
+        <div />
+        <div />
+        <div />
+      </MobileMenuIcon>
+      <Menu open={isMenuOpen}>
         <StyledLink to='/' isActive={pathname === '/'}>Home</StyledLink>
         <StyledLink to='/login' isActive={pathname === '/login'}>Login</StyledLink>
       </Menu>
