@@ -1,6 +1,6 @@
 import React from "react";
 import styled from 'styled-components';
-import { PageLayout, Input, PasswordInput } from "components/common";
+import { PageLayout, Input, PasswordInput, Button, Spinner } from "components/common";
 
 
 const Form = styled.form`
@@ -12,10 +12,17 @@ const Form = styled.form`
   box-sizing: border-box;
   color: black;
   border-radius: 4px;
+
+  .alt-text {
+    text-align: center;
+    margin: 10px 0;
+  }
 `;
+let timeout;
 
 const Login = () => {
   const [formFields, setFormFields] = React.useState({ username: '', password: '' });
+  const [loading, setLoading] = React.useState(false);
 
   const handleInputChange = (e) => {
     e.persist();
@@ -24,22 +31,56 @@ const Login = () => {
       [e.target.name]: e.target.value,
     }))
   }
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    timeout = setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  };
+
+  React.useEffect(() => {
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout);
+      }
+    }
+  }, []);
+
   return (
     <PageLayout>
       <h1>Login</h1>
-      <Form>
-        <Input
-          value={formFields.username}
-          type="text"
-          name='username'
-          placeholder='Username'
-          onChange={handleInputChange}
-        />
-        <PasswordInput
-          value={formFields.password}
-          name='password'
-          onChange={handleInputChange}
-        />
+      <Form onSubmit={handleSubmit}>
+        {
+          loading ? <Spinner /> : (
+            <>
+              <Input
+                value={formFields.username}
+                type="text"
+                name='username'
+                placeholder='Username'
+                onChange={handleInputChange}
+              />
+              <PasswordInput
+                value={formFields.password}
+                name='password'
+                onChange={handleInputChange}
+              />
+            </>
+          )
+        }
+        <Button large type='submit' disabled={loading}>
+          {loading ? 'Loading...' : 'Login'}
+        </Button>
+        {!loading &&
+          <>
+            <div className='alt-text'>or</div>
+            <Button secondary type='button'>
+              Register
+            </Button>
+          </>
+        }
       </Form>
     </PageLayout>
   )
