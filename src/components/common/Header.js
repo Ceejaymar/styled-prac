@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import styled, { ThemeContext } from 'styled-components';
 import { Link as DomLink, useLocation } from 'react-router-dom';
 import { Toggle } from './Toggle';
@@ -79,7 +79,7 @@ const MobileMenuIcon = styled.div`
 const Header = () => {
   const { pathname } = useLocation();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-  const {id, setTheme } = React.useContext(ThemeContext);
+  const { id, setTheme } = React.useContext(ThemeContext);
 
   return (
     <HeaderWrapper>

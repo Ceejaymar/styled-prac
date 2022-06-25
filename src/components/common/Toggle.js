@@ -23,7 +23,7 @@ const Switch = styled.div`
   transform: translate(${({ isActive }) => isActive ? '26px' : '1px'});
 `;
 
-const Toggle = ({ isActive, onToggle}) => {
+const Toggle = ({ isActive, onToggle }) => {
 
   return (
     <ToggleWrap onClick={onToggle}>
